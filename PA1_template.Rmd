@@ -91,5 +91,12 @@ The effect of the replacement of the NA values is a higher count of average
 days, lower and higher days remain mostly unchanged.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+We will need an additional column to classify the data:
 ```{r}
+data.wo.na$wday <- as.factor(sapply(weekdays(as.Date(data.wo.na$date)),function(d) { if (grepl("sábado|domingo",d)) {'weekend'} else {'weekday'} }))
+
+qplot(interval, steps, data=data.wo.na)+geom_line()+facet_grid(wday ~ .)
+
 ```
+

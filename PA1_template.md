@@ -114,9 +114,29 @@ median.spd.wo.na <- format(median(spd.wo.na), scientific = FALSE)
 
 The mean for the total number of steps was 10766 steps, now it is 
 still 10766.  The median was 10765 steps after 
-replacing the NA values it becomes 10766.
+replacing the NA values it becomes 10766, these values don't 
+change much as the mean and the median were already very close.
 
+The effect of the replacement of the NA values is a higher count of average 
+days, lower and higher days remain mostly unchanged.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+We will need an additional column to classify the data:
+
+```r
+data.wo.na$wday <- as.factor(sapply(weekdays(as.Date(data.wo.na$date)), function(d) {
+    if (grepl("sábado|domingo", d)) {
+        "weekend"
+    } else {
+        "weekday"
+    }
+}))
+
+qplot(interval, steps, data = data.wo.na) + geom_line() + facet_grid(wday ~ 
+    .)
+```
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
 
