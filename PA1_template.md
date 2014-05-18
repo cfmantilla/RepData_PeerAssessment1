@@ -122,7 +122,8 @@ days, lower and higher days remain mostly unchanged.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-We will need an additional column to classify the data:
+We will need an additional column to classify the data, this code creates a plot
+of the average steps by interval in each group (weekdays and weekends):
 
 ```r
 data.wo.na$wday <- as.factor(sapply(weekdays(as.Date(data.wo.na$date)), function(d) {
@@ -133,8 +134,11 @@ data.wo.na$wday <- as.factor(sapply(weekdays(as.Date(data.wo.na$date)), function
     }
 }))
 
-qplot(interval, steps, data = data.wo.na) + geom_line() + facet_grid(wday ~ 
-    .)
+grp <- aggregate(data.wo.na$steps, by = list(data.wo.na$interval, data.wo.na$wday), 
+    FUN = mean)
+names(grp) <- c("interval", "wday", "steps")
+
+qplot(interval, steps, data = grp) + geom_line() + facet_grid(wday ~ .)
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
